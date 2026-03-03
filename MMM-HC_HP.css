@@ -1,95 +1,130 @@
 /* MMM-HC_HP — Heures Creuses / Heures Pleines */
 
 .MMM-HC_HP {
-  min-width: 240px;
+  width: 300px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* ── Badge pill (Option A) ── */
-.mmm-hc-hp-badge {
-  display: inline-block;
-  font-size: 1.4em;
-  font-weight: 700;
-  padding: 0.3em 1.1em;
-  border-radius: 999px;
-  margin-bottom: 0.9em;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+/* ── Status row ── */
+.mmm-hc-hp-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-.mmm-hc-hp-badge--hc {
-  color: #e3f2fd;
-  background-color: #1565c0;
-  box-shadow: 0 0 14px rgba(21, 101, 192, 0.55);
+.mmm-hc-hp-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.mmm-hc-hp-badge--hp {
-  color: #fff3e0;
-  background-color: #e65100;
-  box-shadow: 0 0 14px rgba(230, 81, 0, 0.55);
+.mmm-hc-hp-dot--hc {
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
 }
 
-/* ── Timeline 24h (Option C) ── */
-.mmm-hc-hp-timeline {
-  width: 100%;
+.mmm-hc-hp-dot--hp {
+  background: #f87171;
+  box-shadow: 0 0 8px #f87171;
 }
 
-.mmm-hc-hp-timeline__bar {
-  position: relative;
-  height: 10px;
-  background: #2a2a2a;
-  border-radius: 5px;
-  overflow: visible;
+.mmm-hc-hp-emoji {
+  font-size: 18px;
+  line-height: 1;
 }
 
-.mmm-hc-hp-timeline__seg {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  border-radius: 5px;
+.mmm-hc-hp-label {
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 2px;
 }
 
-.mmm-hc-hp-timeline__seg--hc {
-  background: #1565c0;
-  opacity: 0.9;
-}
+.mmm-hc-hp-label--hc { color: #22c55e; }
+.mmm-hc-hp-label--hp { color: #f87171; }
 
-.mmm-hc-hp-timeline__seg--hp {
-  background: #bf360c;
-  opacity: 0.75;
-}
-
-.mmm-hc-hp-timeline__cursor {
-  position: absolute;
-  top: -5px;
-  width: 3px;
-  height: 20px;
-  background: #ffffff;
-  border-radius: 2px;
-  transform: translateX(-50%);
-  z-index: 2;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
-}
-
-.mmm-hc-hp-timeline__labels {
+/* ── Countdown ── */
+.mmm-hc-hp-countdown {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.4em;
-  font-size: 0.68em;
-  color: #555;
+  align-items: center;
+  padding: 8px 12px;
+  background: #111;
+  border-radius: 8px;
+  margin-bottom: 14px;
 }
 
-/* ── Notice données en cache ── */
-.mmm-hc-hp-cache-notice {
-  display: block;
-  margin-top: 0.6em;
-  font-size: 0.68em;
-  font-style: italic;
+.mmm-hc-hp-countdown__label {
+  font-size: 10px;
   color: #555;
+  letter-spacing: 0.5px;
 }
 
-/* ── Erreur ── */
+.mmm-hc-hp-countdown__value {
+  font-size: 14px;
+  color: #f59e0b;
+  font-weight: 400;
+}
+
+/* ── Day label ── */
+.mmm-hc-hp-day-label {
+  font-size: 9px;
+  color: #444;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+
+/* ── Timeline bar ── */
+.mmm-hc-hp-bar {
+  display: flex;
+  height: 11px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mmm-hc-hp-bar__seg {
+  height: 100%;
+}
+
+.mmm-hc-hp-bar__seg--hc { background: #166534; }
+.mmm-hc-hp-bar__seg--hp { background: #7c2d12; }
+
+/* ── Transition labels row ── */
+.mmm-hc-hp-ticks__labels {
+  position: relative;
+  height: 16px;
+  margin-top: 4px;
+}
+
+.mmm-hc-hp-ticks__hour {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: #aaa;
+}
+
+/* ── Tick marks row ── */
+.mmm-hc-hp-ticks__marks {
+  position: relative;
+  height: 5px;
+}
+
+.mmm-hc-hp-ticks__mark {
+  position: absolute;
+  width: 1px;
+  height: 5px;
+  background: #333;
+  transform: translateX(-50%);
+}
+
+/* ── Loading / Error ── */
+.mmm-hc-hp-loading {
+  color: #555;
+  font-size: 0.9em;
+}
+
 .mmm-hc-hp-error {
-  color: #ff6b6b;
-  font-size: 1em;
-  margin-top: 0.3em;
+  color: #f87171;
+  font-size: 0.9em;
 }
