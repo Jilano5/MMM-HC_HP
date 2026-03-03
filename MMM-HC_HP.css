@@ -3,6 +3,7 @@
 .MMM-HC_HP {
   width: 300px;
   font-family: 'Segoe UI', sans-serif;
+  padding: 0 16px;
 }
 
 /* ── Status row ── */
@@ -36,8 +37,8 @@
 }
 
 .mmm-hc-hp-label {
-  font-size: 20px;
-  font-weight: 300;
+  font-size: 23px;
+  font-weight: 700;
   letter-spacing: 2px;
 }
 
@@ -56,15 +57,15 @@
 }
 
 .mmm-hc-hp-countdown__label {
-  font-size: 10px;
+  font-size: 12px;
   color: #555;
   letter-spacing: 0.5px;
 }
 
 .mmm-hc-hp-countdown__value {
-  font-size: 14px;
+  font-size: 16px;
   color: #f59e0b;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 /* ── Day label ── */
