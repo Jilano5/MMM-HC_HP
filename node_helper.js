@@ -1,6 +1,6 @@
 "use strict";
 
-/* global Log */
+
 const NodeHelper = require("node_helper");
 const fetch = require("node-fetch");
 const fs = require("fs");
@@ -68,14 +68,14 @@ function deriveHpPeriods(hcPeriods) {
  */
 function parsePeriods(offpeakHoursStr, distributionTariff) {
   if (distributionTariff !== "HPHC") {
-    Log.warn("[MMM-HC_HP] distribution_tariff is not HPHC — no HC/HP option on this contract.");
+    console.warn("[MMM-HC_HP] distribution_tariff is not HPHC — no HC/HP option on this contract.");
     return { periods: [], noHcOption: true };
   }
 
   // Extract the content inside the HC (...) block
   const outerMatch = /HC\s*\(([^)]+)\)/i.exec(offpeakHoursStr);
   if (!outerMatch) {
-    Log.warn(`[MMM-HC_HP] offpeak_hours format unrecognized: "${offpeakHoursStr}"`);
+    console.warn(`[MMM-HC_HP] offpeak_hours format unrecognized: "${offpeakHoursStr}"`);
     return { periods: [], noHcOption: false };
   }
 
@@ -131,7 +131,7 @@ async function fetchContract(prm, token) {
         message: `Erreur serveur (${response.status})`,
         code: response.status,
       };
-      Log.error(`[MMM-HC_HP] API error ${response.status} — token [REDACTED]`);
+      console.error(`[MMM-HC_HP] API error ${response.status} — token [REDACTED]`);
       return { error: err };
     }
 
@@ -140,10 +140,10 @@ async function fetchContract(prm, token) {
   } catch (e) {
     clearTimeout(timeoutId);
     if (e.name === "AbortError") {
-      Log.error("[MMM-HC_HP] API timeout after 10 s");
+      console.error("[MMM-HC_HP] API timeout after 10 s");
       return { error: { message: "L'API myelectricaldata ne répond pas (timeout 10 s)", code: "TIMEOUT" } };
     }
-    Log.error("[MMM-HC_HP] Network error:", e.message);
+    console.error("[MMM-HC_HP] Network error:", e.message);
     return { error: { message: `Erreur réseau : ${e.message}`, code: "NETWORK" } };
   }
 }
@@ -166,7 +166,7 @@ module.exports = NodeHelper.create({
 
   start() {
     this.cacheFilePath = path.join(__dirname, "cache", "contract.json");
-    Log.log("[MMM-HC_HP] node_helper started");
+    console.log("[MMM-HC_HP] node_helper started");
   },
 
   // ── Cache I/O ──────────────────────────────────────────────────────────────
@@ -177,12 +177,12 @@ module.exports = NodeHelper.create({
       const raw = fs.readFileSync(this.cacheFilePath, "utf8");
       const entry = JSON.parse(raw);
       if (!entry.fetchedAt || !entry.data || entry.prm !== prm) {
-        Log.warn("[MMM-HC_HP] Cache invalid or PRM mismatch — ignoring");
+        console.warn("[MMM-HC_HP] Cache invalid or PRM mismatch — ignoring");
         return null;
       }
       return entry;
     } catch (e) {
-      Log.error("[MMM-HC_HP] readCache error:", e.message);
+      console.error("[MMM-HC_HP] readCache error:", e.message);
       return null;
     }
   },
@@ -194,7 +194,7 @@ module.exports = NodeHelper.create({
       const entry = { fetchedAt: new Date().toISOString(), prm, data };
       fs.writeFileSync(this.cacheFilePath, JSON.stringify(entry, null, 2), "utf8");
     } catch (e) {
-      Log.error("[MMM-HC_HP] writeCache error:", e.message);
+      console.error("[MMM-HC_HP] writeCache error:", e.message);
     }
   },
 
@@ -215,7 +215,7 @@ module.exports = NodeHelper.create({
         noHcOption,
       });
     } catch (e) {
-      Log.error("[MMM-HC_HP] Error parsing contract data:", e.message);
+      console.error("[MMM-HC_HP] Error parsing contract data:", e.message);
       this.sendSocketNotification("HCHP_ERROR", {
         message: "Erreur de lecture des données contractuelles",
         code: "PARSE",
@@ -227,7 +227,7 @@ module.exports = NodeHelper.create({
 
   async socketNotificationReceived(notification, payload) {
     if (notification !== "HCHP_FETCH_CONTRACT") {
-      Log.log(`[MMM-HC_HP] Unhandled notification: ${notification}`);
+      console.log(`[MMM-HC_HP] Unhandled notification: ${notification}`);
       return;
     }
 
@@ -236,19 +236,19 @@ module.exports = NodeHelper.create({
     // 1. Try fresh cache
     const cached = this.readCache(prm);
     if (isCacheFresh(cached)) {
-      Log.log("[MMM-HC_HP] Serving from fresh cache");
+      console.log("[MMM-HC_HP] Serving from fresh cache");
       this._sendContractData(cached.data, cached.fetchedAt, true);
       return;
     }
 
     // 2. Fetch from API
-    Log.log("[MMM-HC_HP] Fetching from API for PRM [REDACTED]");
+    console.log("[MMM-HC_HP] Fetching from API for PRM [REDACTED]");
     const result = await fetchContract(prm, token);
 
     if (result.error) {
       // Fallback to stale cache if available
       if (cached) {
-        Log.warn(`[MMM-HC_HP] API error (${result.error.code}), falling back to stale cache`);
+        console.warn(`[MMM-HC_HP] API error (${result.error.code}), falling back to stale cache`);
         this._sendContractData(cached.data, cached.fetchedAt, true);
       } else {
         this.sendSocketNotification("HCHP_ERROR", result.error);
