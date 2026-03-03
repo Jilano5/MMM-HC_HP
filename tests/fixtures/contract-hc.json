@@ -16,7 +16,7 @@
             "subscribed_power": "9kVA",
             "last_activation_date": "2020-01-01",
             "distribution_tariff": "HPHC",
-            "offpeak_hours": "HC (22H00-6H00), (13H00-15H00)",
+            "offpeak_hours": "HC (22H00-06H00;13H00-15H00)",
             "contract_status": "ACTIF",
             "last_distribution_tariff_change_date": "2020-01-01"
           }

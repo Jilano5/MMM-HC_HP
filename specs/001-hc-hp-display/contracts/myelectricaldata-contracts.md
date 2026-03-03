@@ -60,18 +60,21 @@ Contient les plages HC (Heures Creuses) du contrat. La valeur est une chaîne li
 le format suit le pattern :
 
 ```
-HC (HHhMM-HHhMM)[, (HHhMM-HHhMM)]*
+HC (HHhMM-HHhMM[;HHhMM-HHhMM]*)
 ```
+
+Les plages multiples sont séparées par un **point-virgule** (`;`) à l'intérieur d'un seul
+bloc de parenthèses.
 
 Exemples observés :
-- `"HC (22H00-6H00)"` — une plage HC
-- `"HC (22H30-6H30), (13H00-15H00)"` — deux plages HC
-- `"HC (22h00-06h00),(12h00-14h00)"` — variante minuscules, sans espace
+- `"HC (22H00-06H00)"` — une plage HC
+- `"HC (0H32-6H32;15H02-17H02)"` — deux plages HC
+- `"HC (22H00-06H00;13H00-15H00)"` — deux plages HC (minuit-crossing + journée)
 
-Regex de parsing (dans `node_helper.js`) :
-```js
-/\((\d{1,2})[Hh](\d{0,2})-(\d{1,2})[Hh](\d{0,2})\)/g
-```
+Stratégie de parsing (dans `node_helper.js`) :
+1. Extraire le contenu du bloc `HC (…)` : `/HC\s*\(([^)]+)\)/i`
+2. Découper par `;`
+3. Parser chaque segment : `/(\d{1,2})[Hh](\d{2})-(\d{1,2})[Hh](\d{2})/`
 
 ### Réponses d'erreur
 
