@@ -127,6 +127,15 @@ Module.register("MMM-HC_HP", {
       return wrapper;
     }
 
+    // ── No HC/HP option on contract ──
+    if (noHcOption) {
+      const el = document.createElement("span");
+      el.classList.add("mmm-hc-hp-error");
+      el.textContent = "⚠ Ce contrat n'a pas d'option HC/HP";
+      wrapper.appendChild(el);
+      return wrapper;
+    }
+
     // ── Loading ──
     if (periods.length === 0) {
       const loading = document.createElement("span");
@@ -135,47 +144,70 @@ Module.register("MMM-HC_HP", {
       return wrapper;
     }
 
-    // ── Badge: current tarification (US1) ──
-    if (!noHcOption) {
-      const badge = document.createElement("div");
-      badge.classList.add("mmm-hc-hp-badge");
-      if (currentType === "HC") {
-        badge.classList.add("mmm-hc-hp-badge--hc");
-        badge.textContent = "⚡ Heures Creuses";
-      } else {
-        badge.classList.add("mmm-hc-hp-badge--hp");
-        badge.textContent = "⚡ Heures Pleines";
-      }
-      wrapper.appendChild(badge);
-    }
+    // ── Badge pill: current tarification (Option A) ──
+    const badge = document.createElement("div");
+    badge.classList.add("mmm-hc-hp-badge");
+    badge.classList.add(currentType === "HC" ? "mmm-hc-hp-badge--hc" : "mmm-hc-hp-badge--hp");
+    badge.textContent = currentType === "HC" ? "⚡ Heures Creuses" : "⚡ Heures Pleines";
+    wrapper.appendChild(badge);
 
-    // ── List: all HC/HP periods (US2) ──
-    const list = document.createElement("ul");
-    list.classList.add("mmm-hc-hp-list");
+    // ── Timeline 24h (Option C) ──
+    const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+    const cursorPct = (nowMin / 1440 * 100).toFixed(2);
+
+    const timeline = document.createElement("div");
+    timeline.classList.add("mmm-hc-hp-timeline");
+
+    const bar = document.createElement("div");
+    bar.classList.add("mmm-hc-hp-timeline__bar");
+
+    // Render one segment div per period (handle midnight-crossing HC)
     for (const p of periods) {
-      const item = document.createElement("li");
-      item.classList.add(
-        "mmm-hc-hp-list__item",
-        `mmm-hc-hp-list__item--${p.type.toLowerCase()}`
-      );
-      item.textContent = `${p.type}  ${p.label}`;
-      list.appendChild(item);
-    }
-    wrapper.appendChild(list);
+      const sMin = p.start.h * 60 + p.start.m;
+      const eMin = p.end.h * 60 + p.end.m;
+      const cls = `mmm-hc-hp-timeline__seg--${p.type.toLowerCase()}`;
 
-    // ── Cache notice (US3) ──
+      const segs = (p.type === "HC" && eMin <= sMin)
+        ? [[sMin, 1440], [0, eMin]]
+        : [[sMin, eMin]];
+
+      for (const [s, e] of segs) {
+        if (s === e) continue;
+        const seg = document.createElement("div");
+        seg.classList.add("mmm-hc-hp-timeline__seg", cls);
+        seg.style.left = `${(s / 1440 * 100).toFixed(2)}%`;
+        seg.style.width = `${((e - s) / 1440 * 100).toFixed(2)}%`;
+        bar.appendChild(seg);
+      }
+    }
+
+    // NOW cursor
+    const cursor = document.createElement("div");
+    cursor.classList.add("mmm-hc-hp-timeline__cursor");
+    cursor.style.left = `${cursorPct}%`;
+    bar.appendChild(cursor);
+
+    timeline.appendChild(bar);
+
+    // Hour labels: 0h 6h 12h 18h 24h
+    const labels = document.createElement("div");
+    labels.classList.add("mmm-hc-hp-timeline__labels");
+    for (const l of ["0h", "6h", "12h", "18h", "24h"]) {
+      const span = document.createElement("span");
+      span.textContent = l;
+      labels.appendChild(span);
+    }
+    timeline.appendChild(labels);
+    wrapper.appendChild(timeline);
+
+    // ── Cache notice ──
     if (fromCache && fetchedAt) {
       const notice = document.createElement("span");
       notice.classList.add("mmm-hc-hp-cache-notice");
-      const date = new Date(fetchedAt);
-      const formatted = date.toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+      notice.textContent = new Date(fetchedAt).toLocaleDateString("fr-FR", {
+        day: "2-digit", month: "2-digit", year: "numeric",
+        hour: "2-digit", minute: "2-digit",
       });
-      notice.textContent = `Données du : ${formatted}`;
       wrapper.appendChild(notice);
     }
 

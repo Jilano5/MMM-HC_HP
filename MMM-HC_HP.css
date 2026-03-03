@@ -1,63 +1,90 @@
 /* MMM-HC_HP — Heures Creuses / Heures Pleines */
 
 .MMM-HC_HP {
+  min-width: 240px;
 }
 
-/* ── Badge tarification courante ── */
+/* ── Badge pill (Option A) ── */
 .mmm-hc-hp-badge {
   display: inline-block;
   font-size: 1.4em;
-  font-weight: bold;
-  padding: 0.3em 0.8em;
-  border-radius: 4px;
-  margin-bottom: 0.5em;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  padding: 0.3em 1.1em;
+  border-radius: 999px;
+  margin-bottom: 0.9em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .mmm-hc-hp-badge--hc {
   color: #e3f2fd;
   background-color: #1565c0;
+  box-shadow: 0 0 14px rgba(21, 101, 192, 0.55);
 }
 
 .mmm-hc-hp-badge--hp {
   color: #fff3e0;
   background-color: #e65100;
+  box-shadow: 0 0 14px rgba(230, 81, 0, 0.55);
 }
 
-/* ── Liste des plages HC/HP ── */
-.mmm-hc-hp-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-width: 100%;
+/* ── Timeline 24h (Option C) ── */
+.mmm-hc-hp-timeline {
+  width: 100%;
 }
 
-.mmm-hc-hp-list__item {
+.mmm-hc-hp-timeline__bar {
+  position: relative;
+  height: 10px;
+  background: #2a2a2a;
+  border-radius: 5px;
+  overflow: visible;
+}
+
+.mmm-hc-hp-timeline__seg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.mmm-hc-hp-timeline__seg--hc {
+  background: #1565c0;
+  opacity: 0.9;
+}
+
+.mmm-hc-hp-timeline__seg--hp {
+  background: #bf360c;
+  opacity: 0.75;
+}
+
+.mmm-hc-hp-timeline__cursor {
+  position: absolute;
+  top: -5px;
+  width: 3px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  z-index: 2;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
+}
+
+.mmm-hc-hp-timeline__labels {
   display: flex;
-  align-items: center;
-  padding: 0.2em 0.6em;
-  margin-bottom: 0.2em;
-  border-radius: 3px;
-  font-size: 0.9em;
-}
-
-.mmm-hc-hp-list__item--hc {
-  background-color: #1a3a5c;
-  color: #b3d4f5;
-}
-
-.mmm-hc-hp-list__item--hp {
-  background-color: #5c2900;
-  color: #ffd6a5;
+  justify-content: space-between;
+  margin-top: 0.4em;
+  font-size: 0.68em;
+  color: #555;
 }
 
 /* ── Notice données en cache ── */
 .mmm-hc-hp-cache-notice {
   display: block;
-  margin-top: 0.4em;
-  font-size: 0.75em;
+  margin-top: 0.6em;
+  font-size: 0.68em;
   font-style: italic;
-  color: #888;
+  color: #555;
 }
 
 /* ── Erreur ── */
