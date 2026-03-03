@@ -61,9 +61,8 @@ HC directement lisibles en chaîne de caractères. Il est parsé côté `node_he
 ```
 
 **Champ clé**: `customer.usage_points[0].contracts.offpeak_hours`
-- Format observé : `"HC (HHhMM-HHhMM), (HHhMM-HHhMM)"` ou `"HC (HHHhMM-HHHhMM)"`
-- La robustesse du parser est critique : les variantes de format (majuscules/minuscules,
-  présence ou absence de minutes, séparateurs) doivent être gérées.
+- Format réel : `"HC (HHhMM-HHhMM[;HHhMM-HHhMM]*)"` — plages séparées par `;` dans un seul bloc `()`
+- La robustesse du parser est critique : les variantes de casse (Hh) doivent être gérées.
 
 **Validation du `distribution_tariff`**: Si `distribution_tariff` est `"BASE"`, le contrat
 n'a pas d'option HC/HP. Le module affiche alors un avertissement et considère toute la
@@ -116,21 +115,22 @@ affiche le message d'absence de données (FR-009).
 
 **Décision**: Regex multi-passes pour extraire toutes les plages HC depuis le champ.
 
-**Format attendu** (exemples réels):
-- `"HC (22H00-6H00)"` (une plage)
-- `"HC (22H30-6H30), (13H00-15H00)"` (deux plages)
-- `"HC (22h00-06h00),(12h00-14h00)"` (sans espace, minuscules)
+**Format réel confirmé** (format API myelectricaldata) :
+- `"HC (22H00-06H00)"` — une plage HC
+- `"HC (0H32-6H32;15H02-17H02)"` — deux plages HC séparées par `;`
+- `"HC (22H00-06H00;13H00-15H00)"` — minuit-crossing + plage journée
 
-**Regex proposée** (itérer sur les matches):
-```js
-/\((\d{1,2})[Hh](\d{0,2})-(\d{1,2})[Hh](\d{0,2})\)/g
-```
-Chaque match donne : `[startH, startM, endH, endM]` en entiers. Les minutes absentes valent 0.
+**Stratégie de parsing** :
+1. Extraire le bloc interne avec `/HC\s*\(([^)]+)\)/i`
+2. Découper par `;` pour obtenir les segments individuels
+3. Parser chaque segment avec `/(\d{1,2})[Hh](\d{2})-(\d{1,2})[Hh](\d{2})/`
+
+Les minutes sont toujours sur 2 chiffres dans le format réel (ex: `0H32` et non `0H0`).
 
 **Output normalisé**: tableau d'objets `{ start: {h, m}, end: {h, m}, type: "HC" }`.
 Les plages HP sont déduites comme complémentaire sur 24h.
 
-**Rationale**: Pas de dépendance externe, robuste aux variantes de format documentées.
+**Rationale**: Pas de dépendance externe, robuste au format réel confirmé.
 
 ---
 

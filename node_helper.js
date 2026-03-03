@@ -57,10 +57,12 @@ function deriveHpPeriods(hcPeriods) {
 
 /**
  * Parse the offpeak_hours string from the contract API.
+ * Expected format: "HC (HH[H]MM-HH[H]MM[;HH[H]MM-HH[H]MM]*)" — e.g. "HC (0H32-6H32;15H02-17H02)"
+ * Multiple HC ranges are separated by semicolons inside a single parenthesis block.
  * Returns HC periods + derived HP periods, sorted by start time.
  * If distribution_tariff !== "HPHC", returns empty array with noHcOption: true.
  *
- * @param {string} offpeakHoursStr  e.g. "HC (22H00-6H00), (13H00-15H00)"
+ * @param {string} offpeakHoursStr  e.g. "HC (0H32-6H32;15H02-17H02)"
  * @param {string} distributionTariff  e.g. "HPHC" | "BASE"
  * @returns {{ periods: Array, noHcOption: boolean }}
  */
@@ -70,14 +72,23 @@ function parsePeriods(offpeakHoursStr, distributionTariff) {
     return { periods: [], noHcOption: true };
   }
 
-  const regex = /\((\d{1,2})[Hh](\d{0,2})-(\d{1,2})[Hh](\d{0,2})\)/g;
+  // Extract the content inside the HC (...) block
+  const outerMatch = /HC\s*\(([^)]+)\)/i.exec(offpeakHoursStr);
+  if (!outerMatch) {
+    Log.warn(`[MMM-HC_HP] offpeak_hours format unrecognized: "${offpeakHoursStr}"`);
+    return { periods: [], noHcOption: false };
+  }
+
+  // Each segment: e.g. "0H32-6H32"
+  const segmentRegex = /(\d{1,2})[Hh](\d{2})-(\d{1,2})[Hh](\d{2})/;
   const hcPeriods = [];
-  let match;
-  while ((match = regex.exec(offpeakHoursStr)) !== null) {
+  for (const seg of outerMatch[1].split(";")) {
+    const match = segmentRegex.exec(seg.trim());
+    if (!match) continue;
     const startH = parseInt(match[1], 10);
-    const startM = match[2] !== "" ? parseInt(match[2], 10) : 0;
+    const startM = parseInt(match[2], 10);
     const endH = parseInt(match[3], 10);
-    const endM = match[4] !== "" ? parseInt(match[4], 10) : 0;
+    const endM = parseInt(match[4], 10);
     const label = `${String(startH).padStart(2, "0")}h${String(startM).padStart(2, "0")} → ${String(endH).padStart(2, "0")}h${String(endM).padStart(2, "0")}`;
     hcPeriods.push({ type: "HC", start: { h: startH, m: startM }, end: { h: endH, m: endM }, label });
   }
