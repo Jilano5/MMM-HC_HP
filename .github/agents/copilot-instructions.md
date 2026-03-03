@@ -1,4 +1,4 @@
-# MMM-HC_HP Development Guidelines
+# MMM-OffPeakHours-France Development Guidelines
 
 Auto-generated from all feature plans. Last updated: 2026-03-03
 

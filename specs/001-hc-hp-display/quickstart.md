@@ -1,4 +1,4 @@
-# Quickstart : MMM-HC_HP
+# Quickstart : MMM-OffPeakHours-France
 
 **Feature**: 001-hc-hp-display | **Date**: 2026-03-03
 
@@ -20,8 +20,8 @@
 
 ```bash
 cd ~/MagicMirror/modules
-git clone https://github.com/<votre-fork>/MMM-HC_HP.git
-cd MMM-HC_HP
+git clone https://github.com/<votre-fork>/MMM-OffPeakHours-France.git
+cd MMM-OffPeakHours-France
 npm install
 ```
 
@@ -33,7 +33,7 @@ Dans `~/MagicMirror/config/config.js`, ajouter dans le tableau `modules` :
 
 ```js
 {
-  module: "MMM-HC_HP",
+  module: "MMM-OffPeakHours-France",
   position: "top_right",  // À adapter selon votre layout
   config: {
     token: "VOTRE_TOKEN_MYELECTRICALDATA",   // REQUIS — 54 caractères
@@ -60,7 +60,7 @@ npm start
 ```
 
 Le module effectue un premier appel à myelectricaldata au démarrage. Les données sont
-mises en cache dans `modules/MMM-HC_HP/cache/contract.json`.
+mises en cache dans `modules/MMM-OffPeakHours-France/cache/contract.json`.
 
 ---
 
@@ -83,9 +83,9 @@ Pour valider le parsing et l'affichage sans connexion à myelectricaldata :
 
 1. Copier la fixture dans le cache :
    ```bash
-   mkdir -p modules/MMM-HC_HP/cache
-   cp modules/MMM-HC_HP/tests/fixtures/contract-hc.json \
-      modules/MMM-HC_HP/cache/contract.json
+   mkdir -p modules/MMM-OffPeakHours-France/cache
+   cp modules/MMM-OffPeakHours-France/tests/fixtures/contract-hc.json \
+      modules/MMM-OffPeakHours-France/cache/contract.json
    ```
 
 2. Éditer `cache/contract.json` et ajouter `fetchedAt` à la date du jour :
@@ -115,9 +115,9 @@ L'indicateur HC/HP se met à jour à la minute. Pour tester rapidement :
 ## Structure des fichiers après installation
 
 ```text
-modules/MMM-HC_HP/
-├── MMM-HC_HP.js          # Module front-end
-├── MMM-HC_HP.css         # Styles
+modules/MMM-OffPeakHours-France/
+├── MMM-OffPeakHours-France.js          # Module front-end
+├── MMM-OffPeakHours-France.css         # Styles
 ├── node_helper.js        # Helper serveur (API + cache)
 ├── package.json
 ├── .eslintrc.js

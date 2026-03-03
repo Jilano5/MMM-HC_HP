@@ -1,4 +1,4 @@
-# MMM-HC_HP
+# MMM-OffPeakHours-France
 
 Module [MagicMirror²](https://magicmirror.builders/) affichant les périodes **Heures Creuses / Heures Pleines** de votre contrat électrique depuis [myelectricaldata](https://www.myelectricaldata.fr/).
 
@@ -25,8 +25,8 @@ Module [MagicMirror²](https://magicmirror.builders/) affichant les périodes **
 
 ```bash
 cd ~/MagicMirror/modules
-git clone https://github.com/VOTRE_UTILISATEUR/MMM-HC_HP.git
-cd MMM-HC_HP
+git clone https://github.com/VOTRE_UTILISATEUR/MMM-OffPeakHours-France.git
+cd MMM-OffPeakHours-France
 npm install
 ```
 
@@ -38,7 +38,7 @@ Ajoutez le bloc suivant dans votre `config/config.js` :
 
 ```javascript
 {
-  module: "MMM-HC_HP",
+  module: "MMM-OffPeakHours-France",
   position: "top_left",
   config: {
     token: "VOTRE_TOKEN_MYELECTRICALDATA",

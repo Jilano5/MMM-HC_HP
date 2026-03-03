@@ -17,18 +17,18 @@ Templates requiring updates:
 Follow-up TODOs: none
 -->
 
-# MMM-HC_HP Constitution
+# MMM-OffPeakHours-France Constitution
 
 ## Core Principles
 
 ### I. MagicMirror Module Convention (NON-NEGOTIABLE)
 
 The project MUST follow the official MagicMirror² module structure at all times:
-- The module entry point MUST be `MMM-HC_HP.js` (main module file, front-end).
+- The module entry point MUST be `MMM-OffPeakHours-France.js` (main module file, front-end).
 - A `node_helper.js` MUST handle all server-side logic including API calls to myelectricaldata.
 - A `package.json` MUST declare metadata consistent with `MagicMirror` module conventions.
-- CSS customisation MUST live in `MMM-HC_HP.css` only; no inline styles injected via JS.
-- The module MUST register itself via `Module.register("MMM-HC_HP", {...})`.
+- CSS customisation MUST live in `MMM-OffPeakHours-France.css` only; no inline styles injected via JS.
+- The module MUST register itself via `Module.register("MMM-OffPeakHours-France", {...})`.
 - No direct DOM manipulation outside the `getDom()` method.
 
 ### II. API Isolation — myelectricaldata Only
@@ -106,7 +106,7 @@ gracefully).
 
 **Refresh Strategy**: Contract data is refreshed at most once every 24 hours. The `node_helper.js`
 MUST persist the last fetch timestamp and the raw contract payload to a local JSON file (path
-configurable, default `modules/MMM-HC_HP/cache/contract.json`). On module startup and on each
+configurable, default `modules/MMM-OffPeakHours-France/cache/contract.json`). On module startup and on each
 `updateInterval` tick, the helper MUST check whether the cached file is from the current calendar
 day (local time); only if the cache is absent or stale is a live API call issued.
 

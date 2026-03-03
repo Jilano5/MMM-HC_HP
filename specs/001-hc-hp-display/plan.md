@@ -14,7 +14,7 @@ dans un fichier JSON pour garantir le fonctionnement hors ligne.
 ## Technical Context
 
 **Language/Version**: Node.js v24 LTS (node_helper — CommonJS) + ES6 navigateur
-(MMM-HC_HP.js — module MagicMirror)
+(MMM-OffPeakHours-France.js — module MagicMirror)
 **Primary Dependencies**: `node-fetch` v2 (CommonJS) pour les appels HTTP dans node_helper ;
 aucun framework front-end (DOM helpers MagicMirror natifs uniquement)
 **Storage**: Fichier JSON local `cache/contract.json` (chemin dans le répertoire du module)
@@ -32,10 +32,10 @@ token jamais exposé dans les logs, l'UI ou les fichiers commités
 *GATE : Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 **I. MagicMirror Module Convention** ✅
-- `MMM-HC_HP.js` : module principal (front-end), `Module.register(...)` présent, DOM
+- `MMM-OffPeakHours-France.js` : module principal (front-end), `Module.register(...)` présent, DOM
   exclusivement dans `getDom()`.
 - `node_helper.js` : tous les appels API et la gestion du cache y sont confinés.
-- `MMM-HC_HP.css` : seul fichier de styles, aucun style inline.
+- `MMM-OffPeakHours-France.css` : seul fichier de styles, aucun style inline.
 - `package.json` : métadonnées conformes à la convention MagicMirror².
 
 **II. API Isolation — myelectricaldata Only** ✅
@@ -84,9 +84,9 @@ specs/001-hc-hp-display/
 ### Source Code (repository root)
 
 ```text
-MMM-HC_HP.js          # Module MagicMirror (front-end, ES6)
+MMM-OffPeakHours-France.js          # Module MagicMirror (front-end, ES6)
 node_helper.js        # Helper serveur (CommonJS) — appels API + cache
-MMM-HC_HP.css         # Styles du module
+MMM-OffPeakHours-France.css         # Styles du module
 package.json          # Métadonnées du module
 
 cache/
@@ -104,5 +104,5 @@ README.md
 
 **Structure Decision**: Module MagicMirror autonome à la racine du dépôt, conforme à la
 structure standard des modules MagicMirror² (pas de sous-répertoires `src/`). La répartition
-front-end / serveur est assurée par la séparation `MMM-HC_HP.js` / `node_helper.js` imposée
+front-end / serveur est assurée par la séparation `MMM-OffPeakHours-France.js` / `node_helper.js` imposée
 par le framework.

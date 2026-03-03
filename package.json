@@ -1,8 +1,8 @@
 {
-  "name": "MMM-HC_HP",
+  "name": "MMM-OffPeakHours-France",
   "version": "1.0.0",
   "description": "MagicMirror² module — Affichage des périodes Heures Creuses / Heures Pleines depuis myelectricaldata",
-  "main": "MMM-HC_HP.js",
+  "main": "MMM-OffPeakHours-France.js",
   "keywords": [
     "MagicMirror",
     "heures creuses",

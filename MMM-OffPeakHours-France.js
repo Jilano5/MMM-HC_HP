@@ -85,9 +85,9 @@ function getTransitionPoints(periods) {
 // MagicMirror² Module
 // ────────────────────────────────────────────────────────────────────────────
 
-Module.register("MMM-HC_HP", {
+Module.register("MMM-OffPeakHours-France", {
   getStyles() {
-    return ["MMM-HC_HP.css"];
+    return ["MMM-OffPeakHours-France.css"];
   },
 
   defaults: {
@@ -116,7 +116,7 @@ Module.register("MMM-HC_HP", {
     };
 
     if (!this.config.token || !this.config.prm) {
-      Log.error("[MMM-HC_HP] 'token' and 'prm' are required in config.");
+      Log.error("[MMM-OffPeakHours-France] 'token' and 'prm' are required in config.");
       this._state.error = {
         message: "Configuration incomplète : 'token' et 'prm' requis",
         code: "CONFIG",
@@ -161,14 +161,14 @@ Module.register("MMM-HC_HP", {
 
   getDom() {
     const wrapper = document.createElement("div");
-    wrapper.classList.add("MMM-HC_HP");
+    wrapper.classList.add("MMM-OffPeakHours-France");
 
     const { periods, currentType, error, noHcOption } = this._state;
 
     // ── Error ──
     if (error && periods.length === 0) {
       const errEl = document.createElement("span");
-      errEl.classList.add("mmm-hc-hp-error");
+      errEl.classList.add("MMM-offpeakhours-error");
       const msgs = {
         401: "⚠ Token manquant ou invalide",
         404: "⚠ PRM incorrect",
@@ -185,7 +185,7 @@ Module.register("MMM-HC_HP", {
     // ── No HC option ──
     if (noHcOption) {
       const el = document.createElement("span");
-      el.classList.add("mmm-hc-hp-error");
+      el.classList.add("MMM-offpeakhours-error");
       el.textContent = "⚠ Ce contrat n'a pas d'option HC/HP";
       wrapper.appendChild(el);
       return wrapper;
@@ -194,7 +194,7 @@ Module.register("MMM-HC_HP", {
     // ── Loading ──
     if (periods.length === 0) {
       const loading = document.createElement("span");
-      loading.classList.add("mmm-hc-hp-loading");
+      loading.classList.add("MMM-offpeakhours-loading");
       loading.textContent = "Chargement…";
       wrapper.appendChild(loading);
       return wrapper;
@@ -205,19 +205,19 @@ Module.register("MMM-HC_HP", {
 
     // ── Status row: dot + emoji + label ──
     const statusRow = document.createElement("div");
-    statusRow.classList.add("mmm-hc-hp-status");
+    statusRow.classList.add("MMM-offpeakhours-status");
 
     const dot = document.createElement("div");
-    dot.classList.add("mmm-hc-hp-dot", isHC ? "mmm-hc-hp-dot--hc" : "mmm-hc-hp-dot--hp");
+    dot.classList.add("MMM-offpeakhours-dot", isHC ? "MMM-offpeakhours-dot--hc" : "MMM-offpeakhours-dot--hp");
     statusRow.appendChild(dot);
 
     const emoji = document.createElement("span");
-    emoji.classList.add("mmm-hc-hp-emoji");
+    emoji.classList.add("MMM-offpeakhours-emoji");
     emoji.textContent = isHC ? "🌙" : "☀️";
     statusRow.appendChild(emoji);
 
     const label = document.createElement("span");
-    label.classList.add("mmm-hc-hp-label", isHC ? "mmm-hc-hp-label--hc" : "mmm-hc-hp-label--hp");
+    label.classList.add("MMM-offpeakhours-label", isHC ? "MMM-offpeakhours-label--hc" : "MMM-offpeakhours-label--hp");
     label.textContent = isHC ? "Heure Creuse" : "Heure Pleine";
     statusRow.appendChild(label);
 
@@ -227,15 +227,15 @@ Module.register("MMM-HC_HP", {
     const diffMin = getNextTransitionMinutes(periods, nowMin, currentType);
     if (diffMin !== null) {
       const countdown = document.createElement("div");
-      countdown.classList.add("mmm-hc-hp-countdown");
+      countdown.classList.add("MMM-offpeakhours-countdown");
 
       const cdLabel = document.createElement("span");
-      cdLabel.classList.add("mmm-hc-hp-countdown__label");
+      cdLabel.classList.add("MMM-offpeakhours-countdown__label");
       cdLabel.textContent = isHC ? "↗ Heure Pleine dans" : "↘ Heure Creuse dans";
       countdown.appendChild(cdLabel);
 
       const cdValue = document.createElement("span");
-      cdValue.classList.add("mmm-hc-hp-countdown__value");
+      cdValue.classList.add("MMM-offpeakhours-countdown__value");
       cdValue.textContent = formatCountdown(diffMin);
       countdown.appendChild(cdValue);
 
@@ -244,16 +244,16 @@ Module.register("MMM-HC_HP", {
 
     // ── Day label ──
     const dayLabel = document.createElement("div");
-    dayLabel.classList.add("mmm-hc-hp-day-label");
+    dayLabel.classList.add("MMM-offpeakhours-day-label");
     dayLabel.textContent = "AUJOURD'HUI";
     wrapper.appendChild(dayLabel);
 
     // ── Timeline bar ──
     const bar = document.createElement("div");
-    bar.classList.add("mmm-hc-hp-bar");
+    bar.classList.add("MMM-offpeakhours-bar");
     for (const seg of buildTimelineSegments(periods)) {
       const el = document.createElement("div");
-      el.classList.add("mmm-hc-hp-bar__seg", `mmm-hc-hp-bar__seg--${seg.type.toLowerCase()}`);
+      el.classList.add("MMM-offpeakhours-bar__seg", `MMM-offpeakhours-bar__seg--${seg.type.toLowerCase()}`);
       el.style.width = `${((seg.end - seg.start) / 1440 * 100).toFixed(3)}%`;
       bar.appendChild(el);
     }
@@ -263,21 +263,21 @@ Module.register("MMM-HC_HP", {
     const pts = getTransitionPoints(periods);
     if (pts.length > 0) {
       const labelsRow = document.createElement("div");
-      labelsRow.classList.add("mmm-hc-hp-ticks__labels");
+      labelsRow.classList.add("MMM-offpeakhours-ticks__labels");
       const ticksRow = document.createElement("div");
-      ticksRow.classList.add("mmm-hc-hp-ticks__marks");
+      ticksRow.classList.add("MMM-offpeakhours-ticks__marks");
 
       for (const pt of pts) {
         const pct = `${(pt / 1440 * 100).toFixed(3)}%`;
 
         const lbl = document.createElement("span");
-        lbl.classList.add("mmm-hc-hp-ticks__hour");
+        lbl.classList.add("MMM-offpeakhours-ticks__hour");
         lbl.style.left = pct;
         lbl.textContent = formatHour(pt);
         labelsRow.appendChild(lbl);
 
         const tick = document.createElement("div");
-        tick.classList.add("mmm-hc-hp-ticks__mark");
+        tick.classList.add("MMM-offpeakhours-ticks__mark");
         tick.style.left = pct;
         ticksRow.appendChild(tick);
       }

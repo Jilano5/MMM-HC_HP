@@ -109,14 +109,14 @@ Stratégie de parsing (dans `node_helper.js`) :
 
 ---
 
-## Contrat interne : node_helper ↔ MMM-HC_HP.js
+## Contrat interne : node_helper ↔ MMM-OffPeakHours-France.js
 
 Communication via l'API `sendSocketNotification` / `socketNotificationReceived` de
 MagicMirror².
 
 ### Front → Helper : `HCHP_FETCH_CONTRACT`
 
-Envoyé par `MMM-HC_HP.js` au démarrage (`start()`) et à chaque tick `updateInterval`.
+Envoyé par `MMM-OffPeakHours-France.js` au démarrage (`start()`) et à chaque tick `updateInterval`.
 
 ```js
 // Payload

@@ -27,8 +27,8 @@ module.exports = {
       rules: { "no-console": "off" },
     },
     {
-      // MMM-HC_HP.js runs in the MagicMirror browser context (globals: Module, Log)
-      files: ["MMM-HC_HP.js"],
+      // MMM-OffPeakHours-France.js runs in the MagicMirror browser context (globals: Module, Log)
+      files: ["MMM-OffPeakHours-France.js"],
       env: { node: false, browser: true },
       globals: {
         Module: "readonly",
