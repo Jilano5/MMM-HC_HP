@@ -64,9 +64,14 @@ HC directement lisibles en chaîne de caractères. Il est parsé côté `node_he
 - Format réel : `"HC (HHhMM-HHhMM[;HHhMM-HHhMM]*)"` — plages séparées par `;` dans un seul bloc `()`
 - La robustesse du parser est critique : les variantes de casse (Hh) doivent être gérées.
 
-**Validation du `distribution_tariff`**: Si `distribution_tariff` est `"BASE"`, le contrat
-n'a pas d'option HC/HP. Le module affiche alors un avertissement et considère toute la
-journée comme HP.
+**Validation du `distribution_tariff`**: Les codes tarifaires `BTINF*` indiquent la présence
+ou l'absence d'une différenciation HC/HP :
+- Codes terminant par **`DT`** : différenciation HP/HC (`BTINFCUDT`, `BTINFMUDT`, `BTINFLUDT`)
+- Codes terminant par **`4`** : différenciation HP/HC + saisonnière (`BTINFCU4`, `BTINFMU4`)
+- Codes terminant par **`ST`** : sans différenciation (`BTINFCUST`, `BTINFMUST`, `BTINFLUST`)
+
+Règle de détection : `/DT$|4$/i.test(distributionTariff)`. Si le contrat n'a pas d'option HC/HP,
+le module affiche un avertissement et `noHcOption: true` est envoyé au front-end.
 
 **Rationale**: Confirmed from OpenAPI schema `ResponseContractContracts`. Aucun appel
 supplémentaire ou parsing d'historique de consommation n'est requis.

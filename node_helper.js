@@ -60,15 +60,23 @@ function deriveHpPeriods(hcPeriods) {
  * Expected format: "HC (HH[H]MM-HH[H]MM[;HH[H]MM-HH[H]MM]*)" — e.g. "HC (0H32-6H32;15H02-17H02)"
  * Multiple HC ranges are separated by semicolons inside a single parenthesis block.
  * Returns HC periods + derived HP periods, sorted by start time.
- * If distribution_tariff !== "HPHC", returns empty array with noHcOption: true.
+ * If distribution_tariff does not indicate HC/HP differentiation, returns empty array
+ * with noHcOption: true.
+ *
+ * HC/HP tariffs have codes ending in "DT" (heures pleines/creuses) or "4" (HP/HC + saisonnière):
+ *   BTINFCUDT, BTINFMUDT, BTINFLUDT, BTINFCU4, BTINFMU4
+ * Non-HC tariffs (no temporal differentiation) end in "ST":
+ *   BTINFCUST, BTINFMUST, BTINFLUST
  *
  * @param {string} offpeakHoursStr  e.g. "HC (0H32-6H32;15H02-17H02)"
- * @param {string} distributionTariff  e.g. "HPHC" | "BASE"
+ * @param {string} distributionTariff  e.g. "BTINFCUDT" | "BTINFCUST"
  * @returns {{ periods: Array, noHcOption: boolean }}
  */
 function parsePeriods(offpeakHoursStr, distributionTariff) {
-  if (distributionTariff !== "HPHC") {
-    console.warn("[MMM-HC_HP] distribution_tariff is not HPHC — no HC/HP option on this contract.");
+  // Codes ending with "DT" or "4" have HC/HP temporal differentiation
+  const hasHcHp = /DT$|4$/i.test(distributionTariff || "");
+  if (!hasHcHp) {
+    console.warn(`[MMM-HC_HP] distribution_tariff "${distributionTariff}" has no HC/HP differentiation.`);
     return { periods: [], noHcOption: true };
   }
 

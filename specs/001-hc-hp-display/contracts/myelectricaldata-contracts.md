@@ -43,7 +43,7 @@ jamais vers le front-end.
           "segment": "string",
           "subscribed_power": "string",
           "last_activation_date": "string",
-          "distribution_tariff": "string",
+          "distribution_tariff": "BTINFCUDT",  // see tariff codes below
           "offpeak_hours": "string",
           "contract_status": "string",
           "last_distribution_tariff_change_date": "string"
@@ -53,6 +53,28 @@ jamais vers le front-end.
   }
 }
 ```
+
+### Champ critique : `distribution_tariff`
+
+Détermine si le contrat dispose d'une différenciation HC/HP. Les codes se décomposent en :
+
+| Code        | Description                                         | HC/HP ? |
+|-------------|-----------------------------------------------------|---------|
+| `BTINFCUST` | Courte utilisation sans différenciation temporelle  | ❌       |
+| `BTINFCUDT` | Courte utilisation avec différenciation HP/HC       | ✅       |
+| `BTINFMUST` | Moyenne utilisation sans différenciation temporelle | ❌       |
+| `BTINFMUDT` | Moyenne utilisation avec différenciation HP/HC      | ✅       |
+| `BTINFLUST` | Longue utilisation sans différenciation temporelle  | ❌       |
+| `BTINFLUDT` | Longue utilisation avec différenciation HP/HC       | ✅       |
+| `BTINFCU4`  | Courte utilisation HP/HC + saisonnière              | ✅       |
+| `BTINFMU4`  | Moyenne utilisation HP/HC + saisonnière             | ✅       |
+
+**Règle de détection HC/HP** : le code se termine par `DT` ou `4`.
+```js
+const hasHcHp = /DT$|4$/i.test(distributionTariff);
+```
+
+---
 
 ### Champ critique : `offpeak_hours`
 
