@@ -20,10 +20,11 @@ module.exports = {
   },
   overrides: [
     {
-      // node_helper.js uses CommonJS
+      // node_helper.js uses CommonJS; Log is not available server-side → use console
       files: ["node_helper.js"],
       env: { node: true, browser: false },
       parserOptions: { ecmaVersion: 2020, sourceType: "commonjs" },
+      rules: { "no-console": "off" },
     },
     {
       // MMM-HC_HP.js runs in the MagicMirror browser context (globals: Module, Log)
