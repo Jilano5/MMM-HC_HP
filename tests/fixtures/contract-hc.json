@@ -1,0 +1,27 @@
+{
+  "fetchedAt": "2026-03-03T08:00:00.000Z",
+  "prm": "12345678901234",
+  "data": {
+    "customer": {
+      "customer_id": "ANONYMIZED",
+      "usage_points": [
+        {
+          "usage_point": {
+            "usage_point_id": "12345678901234",
+            "usage_point_status": "used",
+            "meter_type": "AMM"
+          },
+          "contracts": {
+            "segment": "C1",
+            "subscribed_power": "9kVA",
+            "last_activation_date": "2020-01-01",
+            "distribution_tariff": "HPHC",
+            "offpeak_hours": "HC (22H00-6H00), (13H00-15H00)",
+            "contract_status": "ACTIF",
+            "last_distribution_tariff_change_date": "2020-01-01"
+          }
+        }
+      ]
+    }
+  }
+}

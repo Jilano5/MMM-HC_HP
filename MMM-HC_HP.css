@@ -1,0 +1,68 @@
+/* MMM-HC_HP — Heures Creuses / Heures Pleines */
+
+.MMM-HC_HP {
+}
+
+/* ── Badge tarification courante ── */
+.mmm-hc-hp-badge {
+  display: inline-block;
+  font-size: 1.4em;
+  font-weight: bold;
+  padding: 0.3em 0.8em;
+  border-radius: 4px;
+  margin-bottom: 0.5em;
+  letter-spacing: 0.02em;
+}
+
+.mmm-hc-hp-badge--hc {
+  color: #e3f2fd;
+  background-color: #1565c0;
+}
+
+.mmm-hc-hp-badge--hp {
+  color: #fff3e0;
+  background-color: #e65100;
+}
+
+/* ── Liste des plages HC/HP ── */
+.mmm-hc-hp-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.mmm-hc-hp-list__item {
+  display: flex;
+  align-items: center;
+  padding: 0.2em 0.6em;
+  margin-bottom: 0.2em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.mmm-hc-hp-list__item--hc {
+  background-color: #1a3a5c;
+  color: #b3d4f5;
+}
+
+.mmm-hc-hp-list__item--hp {
+  background-color: #5c2900;
+  color: #ffd6a5;
+}
+
+/* ── Notice données en cache ── */
+.mmm-hc-hp-cache-notice {
+  display: block;
+  margin-top: 0.4em;
+  font-size: 0.75em;
+  font-style: italic;
+  color: #888;
+}
+
+/* ── Erreur ── */
+.mmm-hc-hp-error {
+  color: #ff6b6b;
+  font-size: 1em;
+  margin-top: 0.3em;
+}

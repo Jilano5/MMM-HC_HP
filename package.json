@@ -1,0 +1,22 @@
+{
+  "name": "MMM-HC_HP",
+  "version": "1.0.0",
+  "description": "MagicMirror² module — Affichage des périodes Heures Creuses / Heures Pleines depuis myelectricaldata",
+  "main": "MMM-HC_HP.js",
+  "keywords": [
+    "MagicMirror",
+    "heures creuses",
+    "heures pleines",
+    "HC",
+    "HP",
+    "myelectricaldata"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  }
+}

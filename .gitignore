@@ -1,0 +1,7 @@
+node_modules/
+cache/contract.json
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.tmp
