@@ -86,6 +86,10 @@ function getTransitionPoints(periods) {
 // ────────────────────────────────────────────────────────────────────────────
 
 Module.register("MMM-HC_HP", {
+  getStyles() {
+    return ["MMM-HC_HP.css"];
+  },
+
   defaults: {
     /** myelectricaldata auth token (54-char string) — REQUIRED */
     token: null,
